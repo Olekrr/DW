@@ -1,0 +1,23 @@
+[
+    {
+      "characterName": "Thorin",
+      "class": "Warrior"
+    },
+    {
+      "characterName": "Elrond",
+      "class": "Priest"
+    },
+    {
+      "characterName": "Legolas",
+      "class": "Hunter"
+    },
+    {
+      "characterName": "Gandalf",
+      "class": "Mage"
+    },
+    {
+      "characterName": "Aragorn",
+      "class": "Paladin"
+    }
+  ]
+  

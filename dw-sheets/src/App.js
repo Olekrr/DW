@@ -1,23 +1,15 @@
-import logo from './logo.svg';
+import React from 'react';
+import NavBar from './components/NavBar';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar />
+      <div className="container mt-4">
+        <h1>Welcome to the Guild Raid Manager</h1>
+        <p>Choose a raid from the navigation menu above to get started.</p>
+      </div>
     </div>
   );
 }
