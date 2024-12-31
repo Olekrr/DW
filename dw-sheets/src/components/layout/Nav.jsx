@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand" href="/">Guild Raids</a>
+        <Link className="navbar-brand" to="/">Guild Raids</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -20,19 +21,19 @@ const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="/editor-login">Editor Login</a>
+              <Link className="nav-link" to="/login">Editor Login</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/molten-core">Molten Core</a>
+              <button className="nav-link btn btn-link" disabled>Molten Core</button>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/blackwing-lair">Blackwing Lair</a>
+              <button className="nav-link btn btn-link" disabled>Blackwing Lair</button>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/ahn-qiraj">Ahn'Qiraj</a>
+              <button className="nav-link btn btn-link" disabled>Ahn'Qiraj</button>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/naxxramas">Naxxramas</a>
+              <button className="nav-link btn btn-link" disabled>Naxxramas</button>
             </li>
           </ul>
         </div>
