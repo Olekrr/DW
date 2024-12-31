@@ -1,17 +1,15 @@
+// src/App.jsx
 import React from 'react';
-import NavBar from './components/NavBar';
-import './App.css';
+import Layout from './components/Layout';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <NavBar />
-      <div className="container mt-4">
-        <h1>Welcome to the Guild Raid Manager</h1>
-        <p>Choose a raid from the navigation menu above to get started.</p>
+    <Layout>
+      <div>
+        <p>Welcome to the Raid Management Tool! More features coming soon...</p>
       </div>
-    </div>
+    </Layout>
   );
-}
+};
 
 export default App;
