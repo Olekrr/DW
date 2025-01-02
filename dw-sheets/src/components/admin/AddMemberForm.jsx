@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import addMember from '../../api/addMember';
+import React, { useState, useContext } from 'react';
+import { MemberContext } from './memberContext.js';
 
 const AddMemberForm = () => {
   const [characterName, setCharacterName] = useState('');
@@ -7,22 +7,17 @@ const AddMemberForm = () => {
   const [role, setRole] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const { handleAddMember } = useContext(MemberContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setError('You must be logged in to add a member.');
-      return;
-    }
-
     try {
       const newMember = { characterName, class: memberClass, role };
-      const response = await addMember(newMember, token);
-      setSuccess(`Member ${response.characterName} added successfully!`);
+      await handleAddMember(newMember);
+      setSuccess(`Member ${characterName} added successfully!`);
       setCharacterName('');
       setMemberClass('');
       setRole('');
