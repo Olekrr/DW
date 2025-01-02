@@ -24,16 +24,16 @@ const NavBar = () => {
               <Link className="nav-link" to="/login">Editor Login</Link>
             </li>
             <li className="nav-item">
-              <button className="nav-link btn btn-link" disabled>Molten Core</button>
+              <Link className="nav-link" to="/molten-core">Molten Core</Link>
             </li>
             <li className="nav-item">
-              <button className="nav-link btn btn-link" disabled>Blackwing Lair</button>
+              <Link className="nav-link" to="/blackwing-lair">Blackwing Lair</Link>
             </li>
             <li className="nav-item">
-              <button className="nav-link btn btn-link" disabled>Ahn'Qiraj</button>
+              <Link className="nav-link" to="/ahn-qiraj">Ahn'Qiraj</Link>
             </li>
             <li className="nav-item">
-              <button className="nav-link btn btn-link" disabled>Naxxramas</button>
+              <Link className="nav-link" to="/naxxramas">Naxxramas</Link>
             </li>
           </ul>
         </div>
