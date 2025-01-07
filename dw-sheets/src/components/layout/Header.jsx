@@ -1,10 +1,10 @@
 import React from 'react';
-import Nav from './Nav';
+import NavBar from './Nav';
 
-const Header = () => {
+const Header = ({ isLoggedIn, onLogout }) => {
   return (
     <header>
-      <Nav />
+      <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} />
     </header>
   );
 };

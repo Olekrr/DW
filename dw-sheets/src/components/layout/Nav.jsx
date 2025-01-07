@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const NavBar = () => {
+const NavBar = ({ isLoggedIn, onLogout }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -20,9 +20,26 @@ const NavBar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Editor Login</Link>
-            </li>
+            {!isLoggedIn ? (
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Editor Login</Link>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/admin">Admin Control Panel</Link>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-link nav-link"
+                    style={{ textDecoration: 'none' }}
+                    onClick={onLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
             <li className="nav-item">
               <Link className="nav-link" to="/molten-core">Molten Core</Link>
             </li>

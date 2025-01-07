@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
+import { useDrag } from 'react-dnd';
 import { MemberContext } from './memberContext.js';
+import './memberlist.css';
 
 const MemberList = () => {
   const { membersByClass, error } = useContext(MemberContext);
@@ -16,19 +18,17 @@ const MemberList = () => {
   ];
 
   return (
-    <div>
+    <div className="member-list-container">
       <h2>Member List</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <div style={{ display: 'flex', gap: '20px' }}>
+      <div className="member-list-grid">
         {classes.map((className) => (
-          <div key={className} style={{ flex: 1 }}>
+          <div key={className} className="member-class-column">
             <h3>{className}</h3>
             <ul>
               {membersByClass[className] ? (
                 membersByClass[className].map((member) => (
-                  <li key={member.id}>
-                    {member.characterName} ({member.role})
-                  </li>
+                  <DraggableMember key={member._id || member.id} member={member} />
                 ))
               ) : (
                 <li>No members</li>
@@ -38,6 +38,26 @@ const MemberList = () => {
         ))}
       </div>
     </div>
+  );
+};
+
+const DraggableMember = ({ member }) => {
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: 'MEMBER',
+    item: { ...member },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  const className = ['draggable-member', isDragging ? 'is-dragging' : '']
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <li ref={dragRef} className={className}>
+      {member.characterName} ({member.role})
+    </li>
   );
 };
 

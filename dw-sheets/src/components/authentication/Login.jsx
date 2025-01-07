@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../apiService';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,8 +15,8 @@ const Login = () => {
     try {
       const data = await login(username, password);
       localStorage.setItem('token', data.token);
-      alert('Login successful!');
-      navigate('/admin');
+      onLogin(); // Notify the App component about login success
+      navigate('/admin'); // Redirect to the Admin page
     } catch (err) {
       setError(err.message || 'Login failed');
     }
