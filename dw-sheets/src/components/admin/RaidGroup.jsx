@@ -30,6 +30,8 @@ const DroppableSlot = ({ member, groupName, index, onDrop }) => {
     .filter(Boolean)
     .join(' ');
 
+  console.log('DroppableSlot member:', member);
+
   return (
     <li
       ref={(node) => {
@@ -47,6 +49,7 @@ const RaidGroup = () => {
   const [raidGroup, setRaidGroup] = useState(null);
   const [error, setError] = useState('');
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [isDropping, setIsDropping] = useState(false);
 
   const fetchRaidGroup = async () => {
     try {
@@ -69,7 +72,14 @@ const RaidGroup = () => {
   }, []);
 
   const handleDrop = (draggedItem, targetGroupName, targetIndex) => {
-    if (!raidGroup) return;
+    if (isDropping) return; 
+    setIsDropping(true);
+
+    if (!raidGroup || !draggedItem || targetGroupName === undefined || targetIndex === undefined) {
+      console.log('Invalid drop:', draggedItem, targetGroupName, targetIndex);
+      setIsDropping(false);
+      return;
+    }
 
     setRaidGroup((prevRaidGroup) => {
       const updatedGroups = JSON.parse(JSON.stringify(prevRaidGroup.groups));
@@ -78,6 +88,7 @@ const RaidGroup = () => {
 
       if (sourceGroup === targetGroupName && sourceIndex === targetIndex) {
         console.log('Attempted to drop into the same slot. No changes made.');
+        setIsDropping(false);
         return prevRaidGroup;
       }
 
@@ -95,6 +106,8 @@ const RaidGroup = () => {
         role: draggedItem.role || null,
       };
 
+      console.log('Updated groups:', updatedGroups);
+      setIsDropping(false);
       return {
         ...prevRaidGroup,
         groups: updatedGroups,
@@ -130,7 +143,7 @@ const RaidGroup = () => {
             <ul>
               {members.map((member, index) => (
                 <DroppableSlot
-                  key={`${groupName}-${index}`}
+                  key={`${groupName}-${index}-${member.memberId || 'empty'}`}
                   member={member}
                   groupName={groupName}
                   index={index}
