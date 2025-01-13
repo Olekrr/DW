@@ -3,7 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { getRaidGroups, updateRaidGroup } from '../../apiService';
 import './raidgroup.css';
 
-const DroppableSlot = ({ member, groupName, index, onDrop }) => {
+const DroppableSlot = React.memo(({ member, groupName, index, onDrop }) => {
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: 'MEMBER',
     drop: (draggedItem) => {
@@ -30,8 +30,6 @@ const DroppableSlot = ({ member, groupName, index, onDrop }) => {
     .filter(Boolean)
     .join(' ');
 
-  console.log('DroppableSlot member:', member);
-
   return (
     <li
       ref={(node) => {
@@ -43,7 +41,8 @@ const DroppableSlot = ({ member, groupName, index, onDrop }) => {
       {member.name || 'Empty Slot'}
     </li>
   );
-};
+});
+
 
 const RaidGroup = () => {
   const [raidGroup, setRaidGroup] = useState(null);
@@ -72,50 +71,53 @@ const RaidGroup = () => {
   }, []);
 
   const handleDrop = (draggedItem, targetGroupName, targetIndex) => {
-    if (isDropping) return; 
+    if (isDropping) return;
     setIsDropping(true);
-
+  
     if (!raidGroup || !draggedItem || targetGroupName === undefined || targetIndex === undefined) {
       console.log('Invalid drop:', draggedItem, targetGroupName, targetIndex);
       setIsDropping(false);
       return;
     }
-
+  
     setRaidGroup((prevRaidGroup) => {
       const updatedGroups = JSON.parse(JSON.stringify(prevRaidGroup.groups));
-
+  
       const { sourceGroup, sourceIndex } = draggedItem;
-
+  
       if (sourceGroup === targetGroupName && sourceIndex === targetIndex) {
         console.log('Attempted to drop into the same slot. No changes made.');
         setIsDropping(false);
         return prevRaidGroup;
       }
-
+  
       if (sourceGroup !== undefined && sourceIndex !== undefined) {
-        updatedGroups[sourceGroup][sourceIndex] = {
-          memberId: null,
-          name: null,
-          role: null,
+        const sourceMember = updatedGroups[sourceGroup][sourceIndex];
+        const targetMember = updatedGroups[targetGroupName][targetIndex];
+  
+        updatedGroups[sourceGroup][sourceIndex] = targetMember;
+        updatedGroups[targetGroupName][targetIndex] = sourceMember;
+      } else {
+        const newMember = {
+          memberId: draggedItem.memberId || draggedItem._id,
+          name: draggedItem.name || draggedItem.characterName,
+          role: draggedItem.role || null,
         };
+  
+        updatedGroups[targetGroupName][targetIndex] = newMember;
       }
-
-      updatedGroups[targetGroupName][targetIndex] = {
-        memberId: draggedItem.memberId || draggedItem._id,
-        name: draggedItem.name || draggedItem.characterName,
-        role: draggedItem.role || null,
-      };
-
-      console.log('Updated groups:', updatedGroups);
+  
+      console.log('Updated groups after drop:', updatedGroups);
       setIsDropping(false);
       return {
         ...prevRaidGroup,
         groups: updatedGroups,
       };
     });
-
+  
     setUnsavedChanges(true);
   };
+  
 
   const saveChanges = async () => {
     if (!raidGroup) return;
